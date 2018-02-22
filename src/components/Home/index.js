@@ -1,9 +1,12 @@
 import React from 'react';
-import FirstSection from './firstSection';
 import styled from 'styled-components';
+import CTASection from './CTASection';
+
+const Wrapper = styled.div`
+`;
 
 export default () => (
-    <div>
-        <FirstSection/>
-    </div>
+    <Wrapper>
+        <CTASection/>
+    </Wrapper>
 )

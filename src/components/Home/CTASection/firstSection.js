@@ -6,10 +6,17 @@ const FirstSection = styled.div`
     flex-flow: column;
     justify-content: center;
     align-content: center;
+    flex: 0 0 34%;
+    @media(max-width: 768px){
+        flex: 0 0 100%;
+        width: 100%;
+        order: 1;
+    }
+    padding: 7rem 0 3rem 0;
 `;
 
 const HeadingWrapper = styled.div`
-    padding: 7rem 0 2rem 0;
+    padding-bottom: 2rem;
     text-align: center;
 `;
 
@@ -20,7 +27,7 @@ const Heading = styled.h3`
 
 const InputWrapper = styled.div`
     display: flex;
-    padding: 0 0 7rem 0;
+    padding: 0;
     justify-content: center;
 `;
 

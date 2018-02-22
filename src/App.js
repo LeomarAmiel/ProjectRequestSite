@@ -4,7 +4,7 @@ import Header from './components/Header';
 import Home from './components/Home';
 
 injectGlobal`
-    html {
+    html, body {
         margin: 0;
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; 
         @media screen and (min-width: 360px) {
