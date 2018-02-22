@@ -6,9 +6,12 @@ import GadgetSection from './gadgetSection';
 
 const Wrapper = styled.section`
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     @media(max-width: 768px){
         flex-wrap: wrap;
+    }
+    @media(min-width: 769px) and (max-width: 1200px){
+        justify-content: space-between;
     }
 `;
 

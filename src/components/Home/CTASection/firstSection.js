@@ -6,11 +6,12 @@ const FirstSection = styled.div`
     flex-flow: column;
     justify-content: center;
     align-content: center;
-    flex: 0 0 34%;
+    flex: 0 0 40%;
     @media(max-width: 768px){
         flex: 0 0 100%;
         width: 100%;
         order: 1;
+        padding: 2rem 0 2rem 0;
     }
     padding: 7rem 0 3rem 0;
 `;
@@ -21,27 +22,34 @@ const HeadingWrapper = styled.div`
 `;
 
 const Heading = styled.h3`
-    display: inline;
-    font-size: 1.5rem;
+    position: relative;
+    display: block;
+    margin: 0;
+    font-size: 2rem;
+    @media(max-width: 768px){
+        padding: 0 2.5rem;
+    }
 `;
 
 const InputWrapper = styled.div`
     display: flex;
-    padding: 0;
+    padding: 0 0.5rem;
     justify-content: center;
 `;
 
 const Input = styled.input`
-    height: 50px;
-    width: 15rem;
+    height: 45px;
+    width: 16rem;
     background-color: white;
     padding-left: 2.25rem;
     background: no-repeat url('./assets/location.svg');
     background-position: 5% 50%;
     border: 1px solid rgb(220, 220, 220);
     font-size: 18px;
-    &::placeholder{
-        font-size: 16px; 
+    @media(max-width: 768px){
+        &::placeholder{
+            font-size: 14px; 
+        }
     }
     &:focus{
         outline: none;

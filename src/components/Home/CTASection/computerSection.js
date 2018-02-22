@@ -4,8 +4,8 @@ import styled from 'styled-components';
 const Computer = styled.div`
     background: no-repeat url('./assets/mac.png');
     background-size: 10rem;
-    background-position: 55% 75%;
-    flex: 0 0 33%;
+    background-position: 65% 75%;
+    flex: 0 0 25%;
     height: 25rem;
     @media(max-width: 768px){
         flex: 0 0 50%;
@@ -14,9 +14,9 @@ const Computer = styled.div`
         background-size: 7rem;
         order: 2;
     }
-    @media(min-width: 769px) and (max-width: 1024px){
+    @media(min-width: 769px) and (max-width: 1200px){
         background-position: -5rem 60%;
-        flex: 0 0 25%;
+        flex: 0 0 20%;
         background-size: 10rem;
     }
 `;
