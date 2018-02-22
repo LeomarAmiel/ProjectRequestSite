@@ -4,11 +4,10 @@ import styled from 'styled-components';
 const Header = styled.div`
     display: flex;
     justify-content: space-around;
-    align-content: 'center';
-    padding: .25rem 0;
-    @media (max-width: 768px) {
-        padding: .75rem .5rem;
-        display: flex;
+    align-content: center;
+    padding: 1rem 0 1rem 0;
+    @media (max-width: 1200px) {
+        padding: .75rem 2rem;
         justify-content: space-between;
     }
 `;

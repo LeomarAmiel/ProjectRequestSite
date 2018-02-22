@@ -1,16 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
-import CTASection from './CTASection';
-import StackSection from './StackSection';
+import Heading from './Heading';
 
-const Wrapper = styled.div`
+const Wrapper = styled.section`
     display: flex;
     flex-direction: column;
+    padding-top: 2rem;
 `;
 
 export default () => (
     <Wrapper>
-        <CTASection/>
-        <StackSection/>
+        <Heading/>
     </Wrapper>
-)
+);
