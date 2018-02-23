@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { injectGlobal } from 'styled-components';
 import Header from './components/Header';
 import Home from './components/Home';
+import Footer from './components/Footer';
 
 injectGlobal`
     html, body {
@@ -25,6 +26,7 @@ class App extends Component {
             <div>
                 <Header/>
                 <Home/>
+                <Footer/>
             </div>
         );
     }
