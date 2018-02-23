@@ -13,14 +13,6 @@ const Wrapper = styled.div`
     }
 `;
 
-const SectionHeaders = styled.h5`
-    color: white;
-    font-weight: 400;
-    margin-top: 0;
-    font-size: 1rem;
-`;
-
-
 const FollowSection = styled.div`
     display: flex;
     flex-direction: column;
