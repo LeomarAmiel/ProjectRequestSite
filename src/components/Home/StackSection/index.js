@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Heading from './Heading';
+import StackList from './StackList';
 
 const Wrapper = styled.section`
     display: flex;
@@ -11,5 +12,6 @@ const Wrapper = styled.section`
 export default () => (
     <Wrapper>
         <Heading/>
+        <StackList/>
     </Wrapper>
 );
