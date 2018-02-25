@@ -5,5 +5,6 @@ module.exports = function (app) {
         res.send({"message": "Server is up"});
     })
 
-    app.post('/signup', Authentication.signup) 
+    app.post('/signup', Authentication.signup);
+    app.post('/signin', Authentication.signin);
 }
