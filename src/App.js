@@ -1,8 +1,13 @@
 import React, { Component } from 'react';
 import { injectGlobal } from 'styled-components';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
 import Header from './components/Header';
 import Home from './components/Home';
 import Footer from './components/Footer';
+import SigninModal from './components/Signin';
+import CombinedReducer from './reducers';
 
 injectGlobal`
     html, body {
@@ -20,14 +25,22 @@ injectGlobal`
     }
 `;
 
+const store = createStore(CombinedReducer);
+
 class App extends Component {
     render() {
         return (
-            <div>
-                <Header/>
-                <Home/>
-                <Footer/>
-            </div>
+            <Provider store={store}>
+                <Router>
+                    <div>
+                        <Header/>
+                        <Route exact path="/" component={Home}/>
+                        <Route path="/signin" component={SigninModal}/>
+                        <SigninModal/>
+                        <Footer/>
+                    </div>
+                </Router>
+            </Provider>
         );
     }
 }
