@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { toggleOpenModal } from '../../actions';
 
-const Header = styled.div`
+const Wrapper = styled.div`
     display: flex;
     justify-content: space-around;
     align-content: center;
@@ -35,18 +38,32 @@ const SignupButton = LoginButton.extend`
     }
 `
 
-export default () => (
-    <Header>
-        <HeaderLogo>
-            LeomarAmiel
-        </HeaderLogo>
-        <span>
-            <LoginButton>
-                LOG IN
-            </LoginButton>
-            <SignupButton>
-                SIGN UP
-            </SignupButton>
-        </span>
-    </Header>
-)
+class Header extends Component {
+    toggleModal = (data) => {
+        this.props.toggleOpenModal(data);
+    }
+
+    render(){
+        return (
+            <Wrapper>
+                <HeaderLogo>
+                    LeomarAmiel
+                </HeaderLogo>
+                <span>
+                    <LoginButton onClick={() => this.toggleModal('login')}>
+                        LOG IN
+                    </LoginButton>
+                    <SignupButton onClick={() =>this.toggleModal('signup')}>
+                        SIGN UP
+                    </SignupButton>
+                </span>
+            </Wrapper>
+        )
+    }
+}
+
+const mapStateToProps = (state) => ({
+    modal: state.modal
+});
+
+export default connect(mapStateToProps, { toggleOpenModal })(Header);
