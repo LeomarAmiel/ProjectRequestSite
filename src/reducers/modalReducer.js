@@ -1,4 +1,4 @@
-import { TOGGLE_MODAL } from '../actions'
+import { REDIRECT_MODAL, TOGGLE_MODAL } from '../actions'
 
 const initialState = {
     isShowingModal: false,
@@ -6,14 +6,17 @@ const initialState = {
 };
 
 export default (state = initialState, action) => {
-    console.log(state);
-    console.log(action);
     switch(action.type) {
         case TOGGLE_MODAL:
             return {
                 isShowingModal: state.isShowingModal ? false : true,
                 type: action.payload
             };
+        case REDIRECT_MODAL: 
+            return {
+                isShowingModal: true,
+                type: state.type === 'login' ? 'signup' : 'login'
+            }
         default:
             return state;
     }

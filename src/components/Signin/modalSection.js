@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
+import { redirectModal } from '../../actions';
 
 const Wrapper = styled.div`
     display: flex;
@@ -45,13 +47,13 @@ const Form = styled.form`
 `;
 
 const ForgotPasswordLink = styled.a`
-    font-size: .5rem;
+    font-size: .45rem;
     color: rgb(84, 135, 247);
     padding: .75rem 0;
 `;
 
 const TermsText = styled.span`
-    font-size: .5rem;
+    font-size: .45rem;
     padding: .75rem 0;
 `;
 
@@ -108,36 +110,40 @@ const RedirectLink = styled.a`
     font-weight: 600;
 `;
 
-export default (props) => {
-    let data = [];
-    let formTerms = undefined;
-    props.onModalData === 'login' 
-        ? (data = ['Log in', 'Forgot Password?', 'SIGN IN', 'New to my website?', 'SIGN UP'], formTerms = <ForgotPasswordLink> {data[1]} </ForgotPasswordLink>)
-        : (data = ['Sign up', 'By signing up, you agree to my Terms of Service and Privacy Policy.', 'SIGN UP', 'Already have an account?', 'LOG IN'], formTerms = <TermsText> {data[1]} </TermsText>)
+class ModalSection extends Component {
 
-    return (
-        <Wrapper onClick={props.onStopPropagation}>
-            <Heading>
-                {data[0]}
-            </Heading>
-            <Form>
-                <Input placeholder='Email address'/>
-                <Input placeholder='Password'/>
-                {formTerms}
-                <Button> {data[2]} </Button>
-                <ButtonSeparator>
-                    <HR/>
-                    <TextSeparator>
-                        or
-                    </TextSeparator>
-                    <HR/>
-                </ButtonSeparator>
-                <FacebookButton> FACEBOOK </FacebookButton>
-            </Form>
-            <RedirectWrapper>
-                <RedirectText> {data[3]} </RedirectText>
-                <RedirectLink href="#"> {data[4]} </RedirectLink>
-            </RedirectWrapper>
-        </Wrapper>
-    );
+    render() {
+        let data = [];
+        let formTerms = undefined;
+        this.props.onModalData === 'login' 
+            ? (data = ['Log in', 'Forgot Password?', 'SIGN IN', 'New to my website?', 'SIGN UP'], formTerms = <ForgotPasswordLink> {data[1]} </ForgotPasswordLink>)
+            : (data = ['Sign up', 'By signing up, you agree to my Terms of Service and Privacy Policy.', 'SIGN UP', 'Already have an account?', 'LOG IN'], formTerms = <TermsText> {data[1]} </TermsText>)
+        return (
+            <Wrapper onClick={this.props.onStopPropagation}>
+                <Heading>
+                    {data[0]}
+                </Heading>
+                <Form>
+                    <Input placeholder='Email address'/>
+                    <Input placeholder='Password'/>
+                    {formTerms}
+                    <Button> {data[2]} </Button>
+                    <ButtonSeparator>
+                        <HR/>
+                        <TextSeparator>
+                            or
+                        </TextSeparator>
+                        <HR/>
+                    </ButtonSeparator>
+                    <FacebookButton> FACEBOOK </FacebookButton>
+                </Form>
+                <RedirectWrapper>
+                    <RedirectText> {data[3]} </RedirectText>
+                    <RedirectLink href="#" onClick={this.props.redirectModal}> {data[4]} </RedirectLink>
+                </RedirectWrapper>
+            </Wrapper>
+        );
+    }
 }
+
+export default connect(null, { redirectModal })(ModalSection)
