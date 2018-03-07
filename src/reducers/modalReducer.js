@@ -2,7 +2,7 @@ import { TOGGLE_MODAL } from '../actions'
 
 const initialState = {
     isShowingModal: false,
-    type: 'LOG_IN'
+    type: undefined
 };
 
 export default (state = initialState, action) => {
