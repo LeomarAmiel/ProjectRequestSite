@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import SignInSection from './signInSection';
+import { connect } from 'react-redux';
+import ModalSection from './modalSection';
+import { toggleOpenModal } from '../../actions';
 
 const Wrapper = styled.div`
 	background-color: rgba(0, 0, 0, .2);
@@ -18,16 +20,32 @@ const Wrapper = styled.div`
 
 `;
 
-export default class extends Component {
+class Signin extends Component {
+    wrapperClick () {
+        this.props.toggleOpenModal(undefined);
+    }
+
     stopClickPropagation(e){
 		e.stopPropagation();
     }
     
     render(){
+        let modalElement = undefined; 
+        this.props.modal.isShowingModal 
+            ? modalElement = (
+                <Wrapper onClick={this.wrapperClick.bind(this)}>
+                    <ModalSection onStopPropagation={this.stopClickPropagation.bind(this)} onModalData={this.props.modal.type}/>
+                </Wrapper>
+            )
+            : modalElement = null;
         return (
-            <Wrapper>
-                <SignInSection/>
-            </Wrapper>
+            modalElement
         );
     }
 }
+
+const mapStateToProps = (state) => ({
+    modal: state.modal
+});
+
+export default connect(mapStateToProps, { toggleOpenModal })(Signin);
