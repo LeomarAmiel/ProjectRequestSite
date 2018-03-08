@@ -1,4 +1,4 @@
-import { REDIRECT_MODAL, TOGGLE_MODAL } from '../actions'
+import { REDIRECT_MODAL, TOGGLE_MODAL, ROUTE_TO_SECTION } from '../actions'
 
 const initialState = {
     isShowingModal: false,
@@ -6,6 +6,8 @@ const initialState = {
 };
 
 export default (state = initialState, action) => {
+    console.log(state);
+    console.log(action);
     switch(action.type) {
         case TOGGLE_MODAL:
             return {
@@ -14,8 +16,13 @@ export default (state = initialState, action) => {
             };
         case REDIRECT_MODAL: 
             return {
-                isShowingModal: true,
+                isShowingModal: state.isShowingModal,
                 type: state.type === 'login' ? 'signup' : 'login'
+            }
+        case ROUTE_TO_SECTION: 
+            return {
+                isShowingModal: false,
+                type: action.payload
             }
         default:
             return state;
