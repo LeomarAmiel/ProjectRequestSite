@@ -82,14 +82,18 @@ class Header extends Component {
     render(){
         let navigationButton = undefined;
         if(this.state.width<=768){
-            navigationButton = <LoginLink to="/login" onClick={() => this.routeToSection('login')}> LOG IN </LoginLink>
+            if(this.props.modal.type === undefined || this.props.modal.type === 'signup'){
+                navigationButton = <LoginLink to="/login" onClick={() => this.routeToSection('login')}> LOG IN </LoginLink>
+            } else {
+                navigationButton = <LoginLink to="/signup" onClick={() => this.routeToSection('signup')}> SIGN UP </LoginLink>
+            }
         }
         else {
             navigationButton = <LoginButton onClick={()=> this.toggleModal('login')}> LOG IN </LoginButton>
         }
         return (
             <Wrapper>
-                <HeaderLink to="/">
+                <HeaderLink to="/" onClick={() => this.routeToSection(undefined)}>
                     LeomarAmiel
                 </HeaderLink>
                 <span>

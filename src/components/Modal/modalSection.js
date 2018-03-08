@@ -26,8 +26,9 @@ const Wrapper = styled.div`
 const Heading = styled.h3`
     margin: 0;
     font-size: 1rem;
-    @media(max-width: 768px){
+    @media(max-width: 1024px){
         padding: 0 2.5rem;
+        margin-top: 2rem;
     }
 `;
 
@@ -134,7 +135,7 @@ const CloseButton = styled.button`
     &:focus {
         outline: none;
     }
-    @media (max-width: 768px){
+    @media (max-width: 1024px){
         display: none;
     }
 `;
@@ -173,17 +174,17 @@ class ModalSection extends Component {
             data = ['Log in', 'Forgot Password?', 'SIGN IN', 'New to my website?', 'SIGN UP'];
             formTerms = <ForgotPasswordLink> {data[1]} </ForgotPasswordLink>
             if(this.state.width<=768){
-                redirect = <RedirectRouterLink to='/signup'> {data[4]} </RedirectRouterLink>;
+                redirect = <RedirectRouterLink to='/signup' onClick={this.props.redirectModal}> {data[4]} </RedirectRouterLink>;
                 header = <Header/>;
             }
             else {
                 redirect = <RedirectLink href="" onClick={this.props.redirectModal}> {data[4]} </RedirectLink>
             }
         } else {
-            data = ['Sign up', 'By signing up, you agree to my Terms of Service and Privacy Policy.', 'SIGN UP', 'Already have an account?', 'LOG IN']
+            data = ['Sign up', 'By signing up, you agree to my Terms of Service.', 'SIGN UP', 'Already have an account?', 'LOG IN']
             formTerms = <TermsText> {data[1]} </TermsText>
             if(this.state.width<=768){
-                redirect = <RedirectRouterLink to='/login'> {data[4]} </RedirectRouterLink>
+                redirect = <RedirectRouterLink to='/login' onClick={this.props.redirectModal}> {data[4]} </RedirectRouterLink>
                 header = <Header/>;
             }
             else {
