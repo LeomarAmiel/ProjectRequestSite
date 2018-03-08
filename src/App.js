@@ -3,10 +3,8 @@ import { injectGlobal } from 'styled-components';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
-import Header from './components/Header';
 import Home from './components/Home';
-import Footer from './components/Footer';
-import SigninModal from './components/Signin';
+import Modal from './components/Modal';
 import CombinedReducer from './reducers';
 
 injectGlobal`
@@ -22,6 +20,12 @@ injectGlobal`
         @media screen and (min-width: 1024px) {
             font-size: 24px;
         }
+    };
+    button {
+        cursor: pointer;
+    }
+    a {
+        cursor: pointer;
     }
 `;
 
@@ -33,11 +37,10 @@ class App extends Component {
             <Provider store={store}>
                 <Router>
                     <div>
-                        <Header/>
                         <Route exact path="/" component={Home}/>
-                        <Route path="/signin" component={SigninModal}/>
-                        <SigninModal/>
-                        <Footer/>
+                        <Route path="/login" component={Modal} />
+                        <Route path="/signup" component={Modal} />
+                        <Modal/>
                     </div>
                 </Router>
             </Provider>
