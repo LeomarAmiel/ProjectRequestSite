@@ -2,21 +2,26 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { toggleOpenModal } from '../../actions';
+import { toggleModal, routeToSection } from '../../actions';
 
 const Wrapper = styled.div`
     display: flex;
     justify-content: space-around;
     align-content: center;
     padding: 1rem 0 1rem 0;
+    @media(max-width: 768px) {
+        align-self: stretch;
+    }
     @media (max-width: 1200px) {
         padding: .75rem 2rem;
         justify-content: space-between;
     }
 `;
 
-const HeaderLogo = styled.a`
-`;
+const HeaderLink = styled(Link)`
+    text-decoration: none;
+    color: black;
+`
 
 const LoginButton = styled.button`
     background-color: transparent;
@@ -30,32 +35,68 @@ const LoginButton = styled.button`
     }
 `;
 
+const LoginLink = LoginButton.withComponent(Link).extend`
+    border: 1px solid black;
+    text-decoration: none;
+    font-size: .5rem;
+
+`;
+
 const SignupButton = LoginButton.extend`
     background-color: rgb(46, 49, 55);
     color: white;
     @media (max-width: 768px) {
         display: none;
     }
-`
+`;
 
 class Header extends Component {
+    constructor (props) {
+        super(props);
+        this.state = {
+            height: window.innerHeight,
+            width: window.innerWidth
+        }
+    }
+
+    updateDimensions () {
+        this.setState({height: window.innerHeight, width: window.innerWidth});
+    }
+
+    componentDidMount () {
+        window.addEventListener('resize', this.updateDimensions.bind(this));
+    }
+    
+    componentWillUnmount () {
+        window.removeEventListener('resize', this.updateDimensions.bind(this));
+    }
+
     toggleModal = (data) => {
-        this.props.toggleOpenModal(data);
+        this.props.toggleModal(data);
+    }
+
+    routeToSection = (data) => {
+        this.props.routeToSection(data);
     }
 
     render(){
+        let navigationButton = undefined;
+        if(this.state.width<=768){
+            navigationButton = <LoginLink to="/login" onClick={() => this.routeToSection('login')}> LOG IN </LoginLink>
+        }
+        else {
+            navigationButton = <LoginButton onClick={()=> this.toggleModal('login')}> LOG IN </LoginButton>
+        }
         return (
             <Wrapper>
-                <HeaderLogo>
+                <HeaderLink to="/">
                     LeomarAmiel
-                </HeaderLogo>
+                </HeaderLink>
                 <span>
-                    <LoginButton onClick={() => this.toggleModal('login')}>
-                        LOG IN
-                    </LoginButton>
-                    <SignupButton onClick={() =>this.toggleModal('signup')}>
-                        SIGN UP
-                    </SignupButton>
+                    {navigationButton}
+                <SignupButton onClick={() =>this.toggleModal('signup')}>
+                    SIGN UP
+                </SignupButton>
                 </span>
             </Wrapper>
         )
@@ -66,4 +107,4 @@ const mapStateToProps = (state) => ({
     modal: state.modal
 });
 
-export default connect(mapStateToProps, { toggleOpenModal })(Header);
+export default connect(mapStateToProps, { toggleModal, routeToSection })(Header);
