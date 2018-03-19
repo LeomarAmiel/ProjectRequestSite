@@ -6,8 +6,8 @@ const router = require('./router.js');
 
 const app = express();
 
-app.use(bodyParser.json({type: '*/*'}))
-
+app.use(bodyParser.json({type: '*/*'}));
+app.use(morgan('combined'));
 router(app);
 
 const port = process.env.PORT || 5000;
