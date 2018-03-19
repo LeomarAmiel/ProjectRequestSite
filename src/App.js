@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { injectGlobal } from 'styled-components';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
 import Home from './components/Home';
 import Modal from './components/Modal';
 import CombinedReducer from './reducers';
@@ -29,7 +30,7 @@ injectGlobal`
     }
 `;
 
-const store = createStore(CombinedReducer);
+const store = createStore(CombinedReducer, applyMiddleware(thunk));
 
 class App extends Component {
     render() {

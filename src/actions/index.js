@@ -1,3 +1,5 @@
+import axios from 'axios'; 
+
 export const TOGGLE_MODAL = 'TOGGLE_MODAL';
 export const REDIRECT_MODAL = 'REDIRECT_MODAL';
 export const ROUTE_TO_SECTION = 'ROUTE_TO_SECTION';
@@ -15,3 +17,10 @@ export const routeToSection = (payload) => ({
     type: ROUTE_TO_SECTION,
     payload
 })
+
+export const signUp = (data, modalFunction) => dispatch => {
+	axios.post('/signUp', data)
+	.then(res => {
+        
+    });
+}
