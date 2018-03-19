@@ -28,13 +28,13 @@ const Links = styled.div`
 `;
 
 const Link = styled.span`
-    color: rgb(144, 149, 161);
+    color: white;
     font-weight: 100;
     font-size: .75rem;
 `;
 
 const Copyright = styled.span`
-    color: rgb(144, 149, 161);
+    color: white;
     font-size: .5rem;
     margin: 2rem 0 .5rem 0;
 `;
