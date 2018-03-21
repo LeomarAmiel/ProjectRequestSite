@@ -13,6 +13,7 @@ export const redirectModal = () => ({
     type: REDIRECT_MODAL,
 })
 
+//This routes a signin modal to a signup modal vice versa
 export const routeToSection = (payload) => ({
     type: ROUTE_TO_SECTION,
     payload
@@ -20,7 +21,7 @@ export const routeToSection = (payload) => ({
 
 export const AUTH_USER = 'AUTH_USER';
 export const UNAUTH_USER = 'UNAUTH_USER';
-export const AUTH_ERROR = 'UNAUTH_ERROR';
+export const AUTH_ERROR = 'AUTH_ERROR';
 
 export const signUp = data => dispatch => {
 	axios.post('/signup', data)
@@ -49,7 +50,7 @@ const authUser = (payload) => ({
     payload
 });
 
-const authError = (payload) => ({
+export const authError = (payload) => ({
     type: AUTH_ERROR,
     payload
 });
