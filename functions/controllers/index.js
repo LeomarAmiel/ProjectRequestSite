@@ -20,7 +20,7 @@ exports.signup = function(req, res, next){
             forEachCounter++;
             if(email===doc.data().email){
                 sameEmail= true;
-                return res.send({"Error": "Email is already in use"});
+                return res.status(409).send({"Error": "Email is already in use"});
             }
             else{
                 if(forEachCounter === querySnapshot.size && sameEmail != true) {
