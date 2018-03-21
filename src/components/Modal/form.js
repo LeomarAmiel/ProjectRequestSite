@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-import { signUp } from '../../actions';
+import { signUp, signIn } from '../../actions';
 
 const FormWrapper = styled.form`
     display: flex;
@@ -28,7 +28,6 @@ const Input = styled.input`
     }
 `;
 
-
 const Button = styled.button`
     background-color: rgb(42, 97, 24);
     color: white;
@@ -40,6 +39,12 @@ const Button = styled.button`
     &:focus{
         outline: none;
     }
+`;
+
+const ErrorMessage = styled.p`
+    color: red;
+    font-size: .6rem;
+    margin: 0;
 `;
 
 const ButtonSeparator = styled.div`
@@ -81,17 +86,34 @@ class Form extends Component {
         this.setState({ password: e.target.value});
     }
 
+    renderError () {
+        console.log(this.props.auth.error);
+        if(this.props.auth.error) {
+            return (
+                <ErrorMessage>
+                    {this.props.auth.error}
+                </ErrorMessage>
+            )
+        }
+    }
+
     handleSubmit(e){
         e.preventDefault();
-        // this.props.signUp({email: this.state.email, password: this.state.password}, this.props.onModalForm);
+        console.log(this.props.onModalForm);
+        if(this.props.onModalForm==='signup') {
+            this.props.signUp({email: this.state.email, password: this.state.password});
+        } else if (this.props.onModalForm==='login') {
+            this.props.signIn({email: this.state.email, password: this.state.password});
+        }
     }
 
     render(){
         return (
             <FormWrapper onSubmit={this.handleSubmit}>
-                <Input placeholder='Email address' value={this.state.email} onChange={this.changeEmail.bind(this)}/>
-                <Input placeholder='Password' value={this.state.password} onChange={this.changePassword.bind(this)}/>
+                <Input placeholder='Email address' value={this.state.email} onChange={this.changeEmail.bind(this)} type="email" />
+                <Input placeholder='Password' value={this.state.password} onChange={this.changePassword.bind(this)} type="password" />
                 {this.props.children}
+                {this.renderError()}
                 <Button type="submit">
                     { this.props.onModalForm==='login' ? 'SIGN IN': 'SIGN UP' }
                 </Button>
@@ -108,4 +130,8 @@ class Form extends Component {
     }
 }
 
-export default connect(null, { signUp })(Form)
+const mapStateToProps = ({auth}) => ({
+    auth
+});
+
+export default connect(mapStateToProps, { signUp, signIn })(Form)

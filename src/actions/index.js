@@ -18,9 +18,40 @@ export const routeToSection = (payload) => ({
     payload
 })
 
-export const signUp = (data, modalFunction) => dispatch => {
-	axios.post('/signUp', data)
+export const AUTH_USER = 'AUTH_USER';
+export const UNAUTH_USER = 'UNAUTH_USER';
+export const AUTH_ERROR = 'UNAUTH_ERROR';
+
+export const signUp = data => dispatch => {
+	axios.post('/signup', data)
 	.then(res => {
-        
-    });
+        console.log('then');
+        console.log(res);
+    })
+    .catch(err => {
+        dispatch(authError('Email is already in use.'));
+    })
 }
+
+export const signIn = (data) => dispatch => {
+    axios.post('/signin',data)
+    .then(res => {
+        console.log('then');
+        console.log(res)
+    })
+    .catch(err => {
+        dispatch(authError('The username and password you entered did not match. Please try again.'));
+    })
+}
+
+const authUser = (payload) => ({
+    type: AUTH_USER,
+    payload
+});
+
+const authError = (payload) => ({
+    type: AUTH_ERROR,
+    payload
+});
+
+
