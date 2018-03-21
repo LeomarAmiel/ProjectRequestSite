@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { connect } from 'react-redux';
-import { signUp, signIn } from '../../actions';
+import { signUp, signIn, authError } from '../../actions';
 
 const FormWrapper = styled.form`
     display: flex;
@@ -41,10 +41,31 @@ const Button = styled.button`
     }
 `;
 
+const ErrorKeyframes = keyframes`
+    0% {
+        opacity: 0;
+    }
+    100 {
+        opacity: 1;
+    }
+`;
+
+const ErrorWrapper = styled.div`
+    background-color: #ffebe8;
+    box-shadow: rgba(34, 34, 34, 0.15) 0px 2px 20px 0px;
+    border: 1px solid #dd3c10;
+    position: absolute;
+    left: 0;
+    top: -100px;
+    opacity: 1;
+    animation: ${ErrorKeyframes} .8s cubic-bezier(1, 0, 0, 1);
+    width: 100%;
+`;
+
 const ErrorMessage = styled.p`
-    color: red;
     font-size: .6rem;
-    margin: 0;
+    margin: 1rem 1rem 1rem 1rem;
+    text-align: center;
 `;
 
 const ButtonSeparator = styled.div`
@@ -90,9 +111,11 @@ class Form extends Component {
         console.log(this.props.auth.error);
         if(this.props.auth.error) {
             return (
-                <ErrorMessage>
-                    {this.props.auth.error}
-                </ErrorMessage>
+                <ErrorWrapper>
+                    <ErrorMessage>
+                        {this.props.auth.error}
+                    </ErrorMessage>
+                </ErrorWrapper>
             )
         }
     }
@@ -101,6 +124,9 @@ class Form extends Component {
         e.preventDefault();
         console.log(this.props.onModalForm);
         if(this.props.onModalForm==='signup') {
+            if(this.state.password.length < 8) {
+                this.props.authError('Password should not be less than eight characters');
+            }
             this.props.signUp({email: this.state.email, password: this.state.password});
         } else if (this.props.onModalForm==='login') {
             this.props.signIn({email: this.state.email, password: this.state.password});
@@ -134,4 +160,4 @@ const mapStateToProps = ({auth}) => ({
     auth
 });
 
-export default connect(mapStateToProps, { signUp, signIn })(Form)
+export default connect(mapStateToProps, { signUp, signIn, authError })(Form)
