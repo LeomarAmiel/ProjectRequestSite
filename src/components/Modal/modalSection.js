@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { redirectModal, toggleModal } from '../../actions';
+import { redirectModal, toggleModal, authError } from '../../actions';
 import Header from '../Header';
 import Form from './form';
 
@@ -105,6 +105,12 @@ class ModalSection extends Component {
 
     onToggleModal() {
         this.props.toggleModal(undefined);
+        this.props.authError(null);
+    }
+
+    onRedirect () {
+        this.props.redirectModal();
+        this.props.authError(null);
     }
 
     render() {
@@ -116,21 +122,21 @@ class ModalSection extends Component {
             data = ['Log in', 'Forgot Password?', 'New to my website?', 'SIGN UP'];
             formTerms = <ForgotPasswordLink> {data[1]} </ForgotPasswordLink>
             if(this.state.width<=768){
-                redirect = <RedirectRouterLink to='/signup' onClick={this.props.redirectModal}> {data[3]} </RedirectRouterLink>;
+                redirect = <RedirectRouterLink to='/signup' onClick={this.onRedirect.bind(this)}> {data[3]} </RedirectRouterLink>;
                 header = <Header/>;
             }
             else {
-                redirect = <RedirectLink href="#" onClick={this.props.redirectModal}> {data[3]} </RedirectLink>
+                redirect = <RedirectLink href="#" onClick={this.onRedirect.bind(this)}> {data[3]} </RedirectLink>
             }
         } else {
             data = ['Sign up', 'By signing up, you agree to my Terms of Service.', 'Already have an account?', 'LOG IN']
             formTerms = <TermsText> {data[1]} </TermsText>
             if(this.state.width<=768){
-                redirect = <RedirectRouterLink to='/login' onClick={this.props.redirectModal}> {data[3]} </RedirectRouterLink>
+                redirect = <RedirectRouterLink to='/login' onClick={this.onRedirect.bind(this)}> {data[3]} </RedirectRouterLink>
                 header = <Header/>;
             }
             else {
-                redirect = <RedirectLink href="#" onClick={this.props.redirectModal}> {data[3]} </RedirectLink>
+                redirect = <RedirectLink href="#" onClick={this.onRedirect.bind(this)}> {data[3]} </RedirectLink>
             }
         }
         return (
@@ -152,4 +158,4 @@ class ModalSection extends Component {
     }
 }
 
-export default connect(null, { redirectModal, toggleModal })(ModalSection)
+export default connect(null, { redirectModal, toggleModal, authError })(ModalSection)

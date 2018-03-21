@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import ModalSection from './modalSection';
-import { toggleModal } from '../../actions';
+import { toggleModal, authError } from '../../actions';
 
 const Wrapper = styled.div`
 	background-color: rgba(0, 0, 0, .2);
@@ -22,6 +22,7 @@ const Wrapper = styled.div`
 class Signin extends Component {
     wrapperClick () {
         this.props.toggleModal(undefined);
+        this.props.authError(null);
     }
 
     stopClickPropagation(e){
@@ -30,7 +31,7 @@ class Signin extends Component {
     
     render(){
         let modalElement = undefined; 
-        if(this.props.modal.isShowingModal ) {
+        if(this.props.modal.isShowingModal) {
             modalElement = (
                 <Wrapper onClick={this.wrapperClick.bind(this)}>
                     <ModalSection onStopPropagation={this.stopClickPropagation.bind(this)} onModalData={this.props.modal.type}/>
@@ -58,4 +59,4 @@ const mapStateToProps = (state) => ({
     modal: state.modal
 });
 
-export default connect(mapStateToProps, { toggleModal })(Signin);
+export default connect(mapStateToProps, { toggleModal, authError })(Signin);
