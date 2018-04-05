@@ -30,7 +30,7 @@ class Signin extends Component {
     }
     
     render(){
-        let modalElement = undefined; 
+        let modalElement = undefined;
         if(this.props.modal.isShowingModal) {
             modalElement = (
                 <Wrapper onClick={this.wrapperClick.bind(this)}>
@@ -41,7 +41,7 @@ class Signin extends Component {
         } else if ('match' in this.props){
             modalElement = (
                 <Wrapper>
-                    <ModalSection onModalData={this.props.modal.type}/>
+                    <ModalSection onModalData={this.props.modal.type === undefined ? this.props.match.path: this.props.modal.type }/>
                 </Wrapper>
             );
         }
@@ -49,14 +49,12 @@ class Signin extends Component {
             modalElement = null;
             document.body.style.overflow='auto';
         }
-        return (
-            modalElement
-        );
+        return modalElement;
     }
 }
 
-const mapStateToProps = (state) => ({
-    modal: state.modal
+const mapStateToProps = ({modal}) => ({
+    modal: modal
 });
 
 export default connect(mapStateToProps, { toggleModal, authError })(Signin);

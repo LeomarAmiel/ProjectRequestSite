@@ -118,7 +118,7 @@ class ModalSection extends Component {
         let formTerms = undefined;
         let redirect = undefined;
         let header = null;
-        if(this.props.onModalData === 'login'){
+        if(this.props.onModalData === 'login'|| this.props.onModalData === '/login'){
             data = ['Log in', 'Forgot Password?', 'New to my website?', 'SIGN UP'];
             formTerms = <ForgotPasswordLink> {data[1]} </ForgotPasswordLink>
             if(this.state.width<=768){
@@ -128,7 +128,7 @@ class ModalSection extends Component {
             else {
                 redirect = <RedirectLink href="#" onClick={this.onRedirect.bind(this)}> {data[3]} </RedirectLink>
             }
-        } else {
+        } else if(this.props.onModalData === 'signup'||this.props.onModalData === '/signup') {
             data = ['Sign up', 'By signing up, you agree to my Terms of Service.', 'Already have an account?', 'LOG IN']
             formTerms = <TermsText> {data[1]} </TermsText>
             if(this.state.width<=768){
