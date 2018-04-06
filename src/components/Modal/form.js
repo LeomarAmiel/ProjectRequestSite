@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled, { keyframes, ThemeProvider } from 'styled-components';
 import { connect } from 'react-redux';
-import { signUp, signIn, authError } from '../../actions';
+import { signUp, logIn, authError } from '../../actions';
 
 const FormWrapper = styled.form`
     display: flex;
@@ -41,7 +41,7 @@ const Button = styled.button`
     }
 `;
 
-const ErrorKeyframes = keyframes`
+const ErrorWrapperKeyframes = keyframes`
     0% {
         opacity: 0;
     }
@@ -51,6 +51,7 @@ const ErrorKeyframes = keyframes`
 `;
 
 const ErrorWrapper = styled.div`
+    box-sizing: border-box;
     background-color: #ffebe8;
     box-shadow: rgba(34, 34, 34, 0.15) 0px 2px 20px 0px;
     border: 1px solid #dd3c10;
@@ -58,14 +59,42 @@ const ErrorWrapper = styled.div`
     left: 0;
     top: -100px;
     opacity: 1;
-    animation: ${ErrorKeyframes} .8s cubic-bezier(1, 0, 0, 1);
+    animation: ${ErrorWrapperKeyframes} .8s cubic-bezier(1, 0, 0, 1);
     width: 100%;
+    @media(max-width: 768px){
+        background-color: unset;
+        border: 0;
+        box-shadow: unset;
+        position: static;
+        width: 15rem;
+    }
 `;
 
 const ErrorMessage = styled.p`
     font-size: .6rem;
     margin: 1rem 1rem 1rem 1rem;
     text-align: center;
+    @media(max-width: 768px){
+        color: red;
+        margin: .5rem 0;
+        text-align: left;
+    }
+
+`;
+
+const theme = {
+    animate: true,
+    transform : 'translateY(8px)'
+};
+
+const ButtonsWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    @media(max-width: 768px) {
+        transform: ${(props) => props.theme.animate ? props.theme.transform  : null };
+        transition: ${(props) => props.theme.animate ? 'transform' : null } 1s;
+    }
 `;
 
 const ButtonSeparator = styled.div`
@@ -108,7 +137,6 @@ class Form extends Component {
     }
 
     renderError () {
-        console.log(this.props.auth.error);
         if(this.props.auth.error) {
             return (
                 <ErrorWrapper>
@@ -122,14 +150,13 @@ class Form extends Component {
 
     handleSubmit(e){
         e.preventDefault();
-        console.log(this.props.onModalForm);
-        if(this.props.onModalForm==='signup') {
+        if(this.props.onModalForm==='signup' || window.location.pathname === '/signup') {
             if(this.state.password.length < 8) {
                 this.props.authError('Password should not be less than eight characters');
             }
             this.props.signUp({email: this.state.email, password: this.state.password});
-        } else if (this.props.onModalForm==='login') {
-            this.props.signIn({email: this.state.email, password: this.state.password});
+        } else if (this.props.onModalForm==='login' || window.location.pathname === '/login') {
+            this.props.logIn({email: this.state.email, password: this.state.password});
         }
     }
 
@@ -140,17 +167,21 @@ class Form extends Component {
                 <Input placeholder='Password' value={this.state.password} onChange={this.changePassword.bind(this)} type="password" />
                 {this.props.children}
                 {this.renderError()}
-                <Button type="submit">
-                    { this.props.onModalForm==='login' ? 'SIGN IN': 'SIGN UP' }
-                </Button>
-                <ButtonSeparator>
-                    <HR/>
-                    <TextSeparator>
-                        or
-                    </TextSeparator>
-                    <HR/>
-                </ButtonSeparator>
-                <FacebookButton> FACEBOOK </FacebookButton>
+                <ThemeProvider theme={this.props.auth.error !==null ? theme : { animate: false }}>
+                    <ButtonsWrapper>
+                        <Button type="submit">
+                            { this.props.onModalForm==='login'||window.location.pathname === '/login' ? 'SIGN IN': 'SIGN UP' }
+                        </Button>
+                        <ButtonSeparator>
+                            <HR/>
+                            <TextSeparator>
+                                or
+                            </TextSeparator>
+                            <HR/>
+                        </ButtonSeparator>
+                        <FacebookButton> FACEBOOK </FacebookButton>
+                    </ButtonsWrapper>
+                </ThemeProvider>
             </FormWrapper>
         );
     }
@@ -160,4 +191,4 @@ const mapStateToProps = ({auth}) => ({
     auth
 });
 
-export default connect(mapStateToProps, { signUp, signIn, authError })(Form)
+export default connect(mapStateToProps, { signUp, logIn, authError })(Form)
