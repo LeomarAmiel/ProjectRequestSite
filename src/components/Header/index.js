@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { toggleModal, routeToSection } from '../../actions';
+import { toggleModal, routeToSection, authError } from '../../actions';
 
 const Wrapper = styled.div`
     display: flex;
@@ -77,6 +77,7 @@ class Header extends Component {
 
     routeToSection = (data) => {
         this.props.routeToSection(data);
+        this.props.authError(null);
     }
 
     render(){
@@ -84,6 +85,8 @@ class Header extends Component {
         if(this.state.width<=768){
             if(window.location.pathname === "/signup" || this.props.modal.type === 'signup'){
                 navigationButton = <LoginLink to="/login" onClick={() => this.routeToSection('login')}> LOG IN </LoginLink>
+            } else if (this.props.modal.type===undefined && window.location.pathname === '/'){
+                
             } else {
                 navigationButton = <LoginLink to="/signup" onClick={() => this.routeToSection('signup')}> SIGN UP </LoginLink>
             }
@@ -111,4 +114,4 @@ const mapStateToProps = (state) => ({
     modal: state.modal
 });
 
-export default connect(mapStateToProps, { toggleModal, routeToSection })(Header);
+export default connect(mapStateToProps, { toggleModal, routeToSection, authError })(Header);
