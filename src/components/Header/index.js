@@ -2,16 +2,13 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { toggleModal, routeToSection, authError } from '../../actions';
+import { toggleModal, routeToSection, redirectModal, authError } from '../../actions';
 
 const Wrapper = styled.div`
     display: flex;
     justify-content: space-around;
-    align-content: center;
+    align-self: stretch;
     padding: 1rem 0 1rem 0;
-    @media(max-width: 768px) {
-        align-self: stretch;
-    }
     @media (max-width: 1200px) {
         padding: .75rem 2rem;
         justify-content: space-between;
@@ -57,6 +54,7 @@ class Header extends Component {
             height: window.innerHeight,
             width: window.innerWidth
         }
+        this.updateDimensions = this.updateDimensions.bind(this);
     }
 
     updateDimensions () {
@@ -64,11 +62,11 @@ class Header extends Component {
     }
 
     componentDidMount () {
-        window.addEventListener('resize', this.updateDimensions.bind(this));
+        window.addEventListener('resize', this.updateDimensions);
     }
     
     componentWillUnmount () {
-        window.removeEventListener('resize', this.updateDimensions.bind(this));
+        window.removeEventListener('resize', this.updateDimensions);
     }
 
     toggleModal = (data) => {
@@ -80,19 +78,39 @@ class Header extends Component {
         this.props.authError(null);
     }
 
+    redirectModalData = (data) => {
+        this.props.redirectModal(data);
+        this.props.authError(null);
+    }
+
     render(){
         let navigationButton = undefined;
         if(this.state.width<=768){
-            if(window.location.pathname === "/signup" || this.props.modal.type === 'signup'){
+            if(window.location.pathname === "/signup" || this.props.modal.type === 'signup'|| (this.props.modal.type===undefined && window.location.pathname === '/')){
                 navigationButton = <LoginLink to="/login" onClick={() => this.routeToSection('login')}> LOG IN </LoginLink>
-            } else if (this.props.modal.type===undefined && window.location.pathname === '/'){
-                
             } else {
                 navigationButton = <LoginLink to="/signup" onClick={() => this.routeToSection('signup')}> SIGN UP </LoginLink>
             }
         }
         else {
-            navigationButton = <LoginButton onClick={()=> this.toggleModal('login')}> LOG IN </LoginButton>
+            if(window.location.pathname === "/login") {
+                navigationButton = ( <span>
+                    <LoginButton onClick={()=> this.redirectModalData('login')}> LOG IN </LoginButton>
+                    <SignupButton onClick={() => this.redirectModalData('signup')}> SIGN UP </SignupButton>
+                </span> );
+            }
+            else if (window.location.pathname === "/signup") {
+                navigationButton = ( <span>
+                    <LoginButton onClick={()=> this.redirectModalData('login')}> LOG IN </LoginButton>
+                    <SignupButton onClick={() => this.redirectModalData('signup')}> SIGN UP </SignupButton>
+                </span> );
+            }
+            else {
+                navigationButton = (<span>
+                    <LoginButton onClick={()=> this.toggleModal('login')}> LOG IN </LoginButton>
+                    <SignupButton onClick={() => this.toggleModal('signup')}> SIGN UP </SignupButton>
+                </span> );
+            }
         }
         return (
             <Wrapper>
@@ -101,9 +119,6 @@ class Header extends Component {
                 </HeaderLink>
                 <span>
                     {navigationButton}
-                <SignupButton onClick={() =>this.toggleModal('signup')}>
-                    SIGN UP
-                </SignupButton>
                 </span>
             </Wrapper>
         )
@@ -114,4 +129,4 @@ const mapStateToProps = (state) => ({
     modal: state.modal
 });
 
-export default connect(mapStateToProps, { toggleModal, routeToSection, authError })(Header);
+export default connect(mapStateToProps, { toggleModal, routeToSection, redirectModal, authError })(Header);
