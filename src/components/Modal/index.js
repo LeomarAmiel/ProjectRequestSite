@@ -14,7 +14,7 @@ const Wrapper = styled.div`
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	z-index: 200;
+	z-index: 2;
 	height: 100%;
 	width: 100vw;
 `;

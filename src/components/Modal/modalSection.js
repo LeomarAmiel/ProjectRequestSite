@@ -108,7 +108,7 @@ class ModalSection extends Component {
     }
 
     onRedirect () {
-        this.props.redirectModal();
+        this.props.redirectModal(null);
         this.props.authError(null);
     }
 
