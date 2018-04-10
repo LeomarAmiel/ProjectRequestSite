@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
-import styled, { keyframes, ThemeProvider } from 'styled-components';
+import styled, { ThemeProvider, keyframes } from 'styled-components';
 import { connect } from 'react-redux';
 import { signUp, logIn, authError } from '../../actions';
+import ErrorMessage from './ErrorMessage';
 
 const FormWrapper = styled.form`
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     margin: 1.5rem 0;
+    height: 13.5rem;
 `;
 
 const Input = styled.input`
@@ -41,60 +43,42 @@ const Button = styled.button`
     }
 `;
 
-const ErrorWrapperKeyframes = keyframes`
-    0% {
-        opacity: 0;
-    }
-    100 {
-        opacity: 1;
-    }
-`;
-
-const ErrorWrapper = styled.div`
-    box-sizing: border-box;
-    background-color: #ffebe8;
-    box-shadow: rgba(34, 34, 34, 0.15) 0px 2px 20px 0px;
-    border: 1px solid #dd3c10;
-    position: absolute;
-    left: 0;
-    top: -100px;
-    opacity: 1;
-    animation: ${ErrorWrapperKeyframes} .8s cubic-bezier(1, 0, 0, 1);
-    width: 100%;
-    @media(max-width: 768px){
-        background-color: unset;
-        border: 0;
-        box-shadow: unset;
-        position: static;
-        width: 15rem;
-    }
-`;
-
-const ErrorMessage = styled.p`
-    font-size: .6rem;
-    margin: 1rem 1rem 1rem 1rem;
-    text-align: center;
-    @media(max-width: 768px){
-        color: red;
-        margin: .5rem 0;
-        text-align: left;
-    }
-
-`;
-
 const theme = {
     animate: true,
-    transform : 'translateY(8px)'
+    transform : 'translateY(10px)'
 };
+
+const ButtonWrapperKeyframes = keyframes`
+    0% {
+        transform: translateY(0)
+    } 
+    20% {
+        transform: translateY(16px)
+    } 
+    40% {
+        transform: translateY(6px)
+    }
+    60% {
+        transform: translateY(14px)
+    }
+    80% {
+        transform: translateY(8px)
+    }
+    90% {
+        transform: translateY(12px)
+    }
+    100% {
+        transform: translateY(10px)
+    }
+`;
 
 const ButtonsWrapper = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    @media(max-width: 768px) {
-        transform: ${(props) => props.theme.animate ? props.theme.transform  : null };
-        transition: ${(props) => props.theme.animate ? 'transform' : null } 1s;
-    }
+    transform: none;
+    animation: ${(props) => props.theme.animate ? ButtonWrapperKeyframes : null } .5s;
+    animation-fill-mode: forwards;
 `;
 
 const ButtonSeparator = styled.div`
@@ -136,23 +120,12 @@ class Form extends Component {
         this.setState({ password: e.target.value});
     }
 
-    renderError () {
-        if(this.props.auth.error) {
-            return (
-                <ErrorWrapper>
-                    <ErrorMessage>
-                        {this.props.auth.error}
-                    </ErrorMessage>
-                </ErrorWrapper>
-            )
-        }
-    }
-
     handleSubmit(e){
         e.preventDefault();
         if(this.props.onModalForm==='signup' || window.location.pathname === '/signup') {
             if(this.state.password.length < 8) {
                 this.props.authError('Password should not be less than eight characters');
+                return;
             }
             this.props.signUp({email: this.state.email, password: this.state.password});
         } else if (this.props.onModalForm==='login' || window.location.pathname === '/login') {
@@ -166,7 +139,10 @@ class Form extends Component {
                 <Input placeholder='Email address' value={this.state.email} onChange={this.changeEmail.bind(this)} type="email" />
                 <Input placeholder='Password' value={this.state.password} onChange={this.changePassword.bind(this)} type="password" />
                 {this.props.children}
-                {this.renderError()}
+                { this.props.auth.error 
+                    ? <ErrorMessage error={ this.props.auth.error } /> 
+                    : null 
+                }
                 <ThemeProvider theme={this.props.auth.error !==null ? theme : { animate: false }}>
                     <ButtonsWrapper>
                         <Button type="submit">
@@ -181,8 +157,10 @@ class Form extends Component {
                         </ButtonSeparator>
                         <FacebookButton> FACEBOOK </FacebookButton>
                     </ButtonsWrapper>
+
                 </ThemeProvider>
             </FormWrapper>
+
         );
     }
 }
