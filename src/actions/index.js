@@ -34,19 +34,20 @@ export const signUp = data => dispatch => {
     })
 }
 
-export const logIn = (data) => dispatch => {
+export const logIn = data => dispatch => {
     axios.post('/login',data)
     .then(res => {
-        console.log(res)
+        console.log(res);
+        dispatch(authUser());
+		localStorage.setItem('token', res.data.token);
     })
     .catch(err => {
         dispatch(authError('The username and password you entered did not match. Please try again.'));
     })
 }
 
-const authUser = (payload) => ({
+const authUser = () => ({
     type: AUTH_USER,
-    payload
 });
 
 export const authError = (payload) => ({
