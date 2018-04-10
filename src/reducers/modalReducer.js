@@ -15,7 +15,10 @@ export default (state = initialState, action) => {
         case REDIRECT_MODAL: 
             return {
                 isShowingModal: state.isShowingModal,
-                type: state.type === 'login' ? 'signup' : 'login'
+                type: action.payload!==null 
+                    ? action.payload
+                    : state.type === 'login' ? 'signup' : 'login'
+                    
             }
         case ROUTE_TO_SECTION: 
             return {

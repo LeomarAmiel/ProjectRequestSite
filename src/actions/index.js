@@ -9,8 +9,9 @@ export const toggleModal = (payload) => ({
     payload
 });
 
-export const redirectModal = () => ({
+export const redirectModal = (payload) => ({
     type: REDIRECT_MODAL,
+    payload
 })
 
 //This routes a login modal to a signup modal vice versa
