@@ -21,14 +21,36 @@ const HeaderLink = styled(Link)`
 `
 
 const LoginButton = styled.button`
+    position: relative;
     background-color: transparent;
     color: black;
     border-radius: 20px;
     padding: .4rem 1rem;
     margin: 0 .1rem;
     font-weight: 700;
+    &:hover {
+        background-color: #ededed;
+    }
     &:focus{
         outline: none;
+    }
+    &::after {
+        content: '';
+        position: absolute;
+        width: 105%;
+        height: 120%;
+        top: -10%;
+        right: 0;
+        bottom: 0;
+        left: -2.5%;
+        z-index: -1;
+        border-radius: 20px;
+        opacity: 0;
+        box-shadow: 0 0 0 2px rgba(76, 76, 76, .7);
+        transition: opacity .3s ease-in;
+    }
+    &:active::after {
+        opacity: 1;
     }
 `;
 
@@ -36,12 +58,25 @@ const LoginLink = LoginButton.withComponent(Link).extend`
     border: 1px solid black;
     text-decoration: none;
     font-size: .5rem;
-
+    &:hover {
+        background-color: #ededed;
+    }
+    @media(max-width: 768px) {
+        &:hover {
+            background-color: transparent;
+        }
+    }
+    &::after {
+        content: none;
+    }
 `;
 
 const SignupButton = LoginButton.extend`
     background-color: rgb(46, 49, 55);
     color: white;
+    &:hover {
+        background-color: #4c4c4c;
+    }
     @media (max-width: 768px) {
         display: none;
     }
@@ -93,13 +128,7 @@ class Header extends Component {
             }
         }
         else {
-            if(window.location.pathname === "/login") {
-                navigationButton = ( <span>
-                    <LoginButton onClick={()=> this.redirectModalData('login')}> LOG IN </LoginButton>
-                    <SignupButton onClick={() => this.redirectModalData('signup')}> SIGN UP </SignupButton>
-                </span> );
-            }
-            else if (window.location.pathname === "/signup") {
+            if(window.location.pathname === "/login" || window.location.pathname === "/signup") {
                 navigationButton = ( <span>
                     <LoginButton onClick={()=> this.redirectModalData('login')}> LOG IN </LoginButton>
                     <SignupButton onClick={() => this.redirectModalData('signup')}> SIGN UP </SignupButton>
