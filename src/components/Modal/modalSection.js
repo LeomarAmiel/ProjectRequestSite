@@ -9,12 +9,12 @@ import Form from './form';
 const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     box-shadow: rgba(34, 34, 34, 0.15) 0px 2px 20px 0px;
     background: white;
     width: 18.5rem;
-    height: 23rem;
+    height: 24rem;
     position: relative;
     @media(max-width: 768px){
         justify-content: flex-start;
@@ -27,6 +27,7 @@ const Wrapper = styled.div`
 const Heading = styled.h3`
     margin: 0;
     font-size: 1rem;
+    margin-top: 3rem;
     @media(max-width: 1024px){
         padding: 0 2.5rem;
         margin-top: 2rem;
@@ -77,9 +78,6 @@ const CloseButton = styled.button`
     &:focus {
         outline: none;
     }
-    @media (max-width: 1024px){
-        display: none;
-    }
 `;
 
 class ModalSection extends Component {
@@ -89,6 +87,7 @@ class ModalSection extends Component {
             height: window.innerHeight,
             width: window.innerWidth
         }
+        this.updateDimensions = this.updateDimensions.bind(this);
     }
 
     updateDimensions () {
@@ -96,11 +95,11 @@ class ModalSection extends Component {
     }
 
     componentDidMount () {
-        window.addEventListener('resize', this.updateDimensions.bind(this));
+        window.addEventListener('resize', this.updateDimensions);
     }
     
     componentWillUnmount () {
-        window.removeEventListener('resize', this.updateDimensions.bind(this));
+        window.removeEventListener('resize', this.updateDimensions);
     }
 
     onToggleModal() {
@@ -139,6 +138,7 @@ class ModalSection extends Component {
                 redirect = <RedirectLink href="#" onClick={this.onRedirect.bind(this)}> {data[3]} </RedirectLink>
             }
         }
+        console.log(this.props.modal);
         return (
             <Wrapper onClick={this.props.onStopPropagation}>
                 { header }
@@ -152,10 +152,19 @@ class ModalSection extends Component {
                     <RedirectText> {data[2]} </RedirectText>
                     {redirect}
                 </RedirectWrapper>
-                <CloseButton onClick={this.onToggleModal.bind(this)}/>
+                {
+                    this.props.modal.isShowingModal 
+                    ? <CloseButton onClick={this.onToggleModal.bind(this)}/> 
+                    : null
+                
+                }
             </Wrapper>
         );
     }
 }
 
-export default connect(null, { redirectModal, toggleModal, authError })(ModalSection)
+const mapStateToProps = ({modal}) => ({
+    modal
+})
+
+export default connect(mapStateToProps, { redirectModal, toggleModal, authError })(ModalSection)
