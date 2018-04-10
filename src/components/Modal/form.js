@@ -10,9 +10,13 @@ const FormWrapper = styled.form`
     justify-content: flex-start;
     margin: 1.5rem 0;
     height: 13.5rem;
+    @media(max-width: 768px) {
+        height: 16rem;
+    }
 `;
 
 const Input = styled.input`
+    position: relative;
     height: 45px;
     width: 15rem;
     border: 0;
@@ -20,14 +24,28 @@ const Input = styled.input`
     font-size: .65rem;  
     &:focus {
         outline: none;
-        border-bottom: 2px solid rgb(42, 97, 24);
-        transition: border-bottom .3s cubic-bezier(0.4, 0, 0.2, 1);
     }
     &::placeholder{
         color: rgb(180, 180, 180);
         font-size: .65rem; 
         font-weight: 300;
     }
+    & + span::after {
+        display: block;
+        content: '';
+        margin-top: -2px;
+        border-bottom: solid 3px rgb(42, 97, 24);  
+        transform: scaleX(0);  
+        transition: transform 200ms ease-out;
+    }
+    &:focus + span::after {
+        transform: scaleX(1);
+    }
+`;
+
+const InputSibling = styled.span`
+    position: relative;
+    height: 2px;
 `;
 
 const Button = styled.button`
@@ -137,7 +155,9 @@ class Form extends Component {
         return (
             <FormWrapper onSubmit={this.handleSubmit}>
                 <Input placeholder='Email address' value={this.state.email} onChange={this.changeEmail.bind(this)} type="email" />
+                <InputSibling/>
                 <Input placeholder='Password' value={this.state.password} onChange={this.changePassword.bind(this)} type="password" />
+                <InputSibling/>
                 {this.props.children}
                 { this.props.auth.error 
                     ? <ErrorMessage error={ this.props.auth.error } /> 
